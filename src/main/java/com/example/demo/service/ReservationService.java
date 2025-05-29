@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class ReservationService {
                 .filter(r -> r.getSeatId().equals(req.seatId))
                 .filter(r -> r.getStatus() == ReservationStatus.RESERVED || r.getStatus() == ReservationStatus.IN_USE)
                 .filter(r -> !(r.getEndTime().isBefore(req.startTime) || r.getStartTime().isAfter(req.endTime)))
-                .collect(Collectors.toList());
+                .toList();
         if (!overlapping.isEmpty()) {
             throw new IllegalArgumentException("해당 좌석은 이미 예약되어 있습니다.");
         }
@@ -132,24 +133,22 @@ public class ReservationService {
         List<Long> brokenSeatIds = seatRepository.findAll().stream()
                 .filter(seat -> seat.getStatus() == SeatStatus.BROKEN)
                 .map(Seat::getId)
-                .collect(Collectors.toList());
+                .toList();
 
         // 3. 예약 충돌 좌석 제외 (RESERVED, IN_USE)
         List<Reservation> overlapping = reservationRepository.findAll().stream()
                 .filter(r -> r.getStatus() == ReservationStatus.RESERVED || r.getStatus() == ReservationStatus.IN_USE)
                 .filter(r -> !(r.getEndTime().isBefore(start) || r.getStartTime().isAfter(end)))
-                .collect(Collectors.toList());
-        List<Long> reservedSeatIds = overlapping.stream().map(Reservation::getSeatId).collect(Collectors.toList());
+                .toList();
+        List<Long> reservedSeatIds = overlapping.stream().map(Reservation::getSeatId).toList();
 
         // 4. 사용 가능한 좌석 필터링
-        List<Long> available = allSeatIds.stream()
+        return allSeatIds.stream()
                 .filter(id -> !reservedSeatIds.contains(id))
                 .filter(id -> !brokenSeatIds.contains(id))
                 .skip(skipVal)
                 .limit(limitVal)
                 .collect(Collectors.toList());
-
-        return available;
     }
 
     // U0104: 예약 시간 연장
@@ -186,7 +185,7 @@ public class ReservationService {
                 .filter(r -> r.getStatus() == ReservationStatus.RESERVED || r.getStatus() == ReservationStatus.IN_USE)
                 .filter(r -> !r.getId().equals(id))
                 .filter(r -> !(r.getEndTime().isBefore(reservation.getEndTime()) || r.getStartTime().isAfter(newEndTime)))
-                .collect(Collectors.toList());
+                .toList();
         if (!overlapping.isEmpty()) {
             throw new IllegalArgumentException("해당 좌석은 이미 예약되어 있습니다.");
         }
@@ -227,7 +226,7 @@ public class ReservationService {
         int limitVal = (limit == null) ? 5 : limit;
         return reservationRepository.findByEmployeeId(employeeId).stream()
             .filter(r -> !r.getStartTime().isAfter(end) && !r.getEndTime().isBefore(start))
-            .sorted((a, b) -> a.getStartTime().compareTo(b.getStartTime()))
+            .sorted(Comparator.comparing(Reservation::getStartTime))
             .skip(skipVal)
             .limit(limitVal)
             .map(this::toResponse)
@@ -285,7 +284,7 @@ public class ReservationService {
         List<Reservation> inUseReservations = reservationRepository.findAll().stream()
                 .filter(r -> r.getSeatId().equals(seat.getId()))
                 .filter(r -> r.getStatus() == ReservationStatus.IN_USE)
-                .collect(Collectors.toList());
+                .toList();
         for (Reservation r : inUseReservations) {
             r.setStatus(ReservationStatus.COMPLETED);
             reservationRepository.save(r);

@@ -18,6 +18,4 @@ public class Building {
 
     private String name;
     private String address;
-
-    // getters/setters
 }

@@ -18,6 +18,4 @@ public class Floor {
     private Building building;
 
     private int floor; // 층수
-
-    // getters/setters
 }

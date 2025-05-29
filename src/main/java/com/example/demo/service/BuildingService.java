@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Building;
-import com.example.demo.entity.BuildingStatus;
 import com.example.demo.repository.BuildingRepository;
 import org.springframework.stereotype.Service;
 

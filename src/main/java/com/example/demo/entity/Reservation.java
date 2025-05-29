@@ -21,6 +21,9 @@ public class Reservation {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
+    @Column(name = "seat_id", insertable = false, updatable = false)
+    private Long seatId;
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -30,6 +33,4 @@ public class Reservation {
     private LocalDateTime checkInAt;
     private LocalDateTime createdAt;
     private Long extendedFromReservationId;
-
-    // getters, setters, constructors
 }

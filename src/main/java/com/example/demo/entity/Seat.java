@@ -19,7 +19,4 @@ public class Seat {
     private String name;
     @Enumerated(EnumType.STRING)
     private SeatStatus status; // AVAILABLE, UNAVAILABLE, BROKEN 등
-
-
-    // getters/setters
 }
