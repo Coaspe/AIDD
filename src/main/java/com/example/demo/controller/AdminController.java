@@ -19,7 +19,7 @@ public class AdminController {
     @PostMapping("/force-return/{seatId}")
     public String forceReturnSeat(@PathVariable Long seatId) {
         seatService.forceReturnSeat(seatId);
-        return "강제 반납 완료";
+        return "Seat force returned successfully";
     }
 
     // A0102: 좌석 상세 현황 조회

@@ -40,7 +40,7 @@ public class SeatService {
     // U0201: 좌석 현황 조회
     public List<Seat> getSeatsByBuildingAndFloor(Long buildingId, int floor) {
         Floor floorEntity = floorRepository.findByBuildingIdAndFloor(buildingId, floor)
-            .orElseThrow(() -> new IllegalArgumentException("해당 빌딩의 해당 층이 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("Floor not found in the specified building"));
         return seatRepository.findByFloorId(floorEntity.getId());
     }
 } 
