@@ -22,7 +22,7 @@ public class SeatController {
 
     // U0201: 좌석 현황 조회
     @GetMapping("/building/{buildingId}/floor/{floor}/seats")
-    public void getSeatsByBuildingAndFloor(@PathVariable Long buildingId, @PathVariable int floor) {
+    public List<Seat> getSeatsByBuildingAndFloor(@PathVariable Long buildingId, @PathVariable int floor) {
         return seatService.getSeatsByBuildingAndFloor(buildingId, floor);
     }
 

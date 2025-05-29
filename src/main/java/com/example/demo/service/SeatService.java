@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Floor;
 import com.example.demo.entity.Seat;
-import com.example.demo.entity.SeatStatus;
 import com.example.demo.repository.SeatRepository;
+import com.example.demo.repository.FloorRepository;
 import com.example.demo.repository.ReservationRepository;
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.ReservationStatus;
@@ -10,16 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SeatService {
     private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
+    private final FloorRepository floorRepository;
 
-    public SeatService(SeatRepository seatRepository, ReservationRepository reservationRepository) {
+    public SeatService(SeatRepository seatRepository, ReservationRepository reservationRepository, FloorRepository floorRepository) {
         this.seatRepository = seatRepository;
         this.reservationRepository = reservationRepository;
+        this.floorRepository = floorRepository;
     }
 
     // A0101: 강제 좌석 반납

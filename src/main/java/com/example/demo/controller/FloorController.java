@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ReservationRequest;
-import com.example.demo.dto.ReservationResponse;
-import com.example.demo.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.demo.entity.Floor;
+import com.example.demo.service.FloorService;
 import java.util.List;
 
 @RestController

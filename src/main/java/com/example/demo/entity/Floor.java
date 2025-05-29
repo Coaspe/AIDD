@@ -1,7 +1,12 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 public class Floor {
     @Id

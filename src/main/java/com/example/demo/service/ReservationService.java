@@ -114,8 +114,7 @@ public class ReservationService {
     public List<Long> getAvailableSeats(
             LocalDateTime start, LocalDateTime end, 
             List<Long> allSeatIds, 
-            Integer skip, Integer limit, 
-            SeatRepository seatRepository) {
+            Integer skip, Integer limit) {
 
         // 1. 입력 데이터 검증
         if (start == null || end == null || start.isBefore(LocalDateTime.now()) || end.isBefore(start)) {

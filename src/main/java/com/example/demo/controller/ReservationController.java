@@ -38,26 +38,40 @@ public class ReservationController {
     @GetMapping("/available-seats")
     public List<Long> getAvailableSeats(@RequestParam("start") String start,
                                         @RequestParam("end") String end,
-                                        @RequestParam("seatIds") List<Long> seatIds) {
+                                        @RequestParam("seatIds") List<Long> seatIds,
+                                        @RequestParam(value = "skip", required = false) Integer skip,
+                                        @RequestParam(value = "limit", required = false) Integer limit) {
         return reservationService.getAvailableSeats(
             java.time.LocalDateTime.parse(start),
             java.time.LocalDateTime.parse(end),
-            seatIds
+            seatIds,
+            skip,
+            limit
         );
     }
 
     // U0104: 예약 시간 연장
     @PostMapping("/{id}/extend")
-    public ReservationResponse extendReservation(@PathVariable Long id, @RequestParam("newEndTime") String newEndTime) {
-        return reservationService.extendReservation(id, java.time.LocalDateTime.parse(newEndTime));
+    public ReservationResponse extendReservation(@PathVariable Long id, 
+                                               @RequestParam("newEndTime") String newEndTime,
+                                               @RequestParam("employeeId") Long employeeId) {
+        return reservationService.extendReservation(id, java.time.LocalDateTime.parse(newEndTime), employeeId);
     }
 
     // U0105: 예약 이력 조회
     @GetMapping("/history")
     public List<ReservationResponse> getReservationHistory(@RequestParam Long employeeId,
                                                           @RequestParam String start,
-                                                          @RequestParam String end) {
-        return reservationService.getReservationHistory(employeeId, java.time.LocalDateTime.parse(start), java.time.LocalDateTime.parse(end));
+                                                          @RequestParam String end,
+                                                          @RequestParam(value = "skip", required = false) Integer skip,
+                                                          @RequestParam(value = "limit", required = false) Integer limit) {
+        return reservationService.getReservationHistory(
+            employeeId, 
+            java.time.LocalDateTime.parse(start), 
+            java.time.LocalDateTime.parse(end),
+            skip,
+            limit
+        );
     }
 
     // U0202: 체크인

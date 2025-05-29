@@ -25,7 +25,6 @@ public class AdminController {
     // A0102: 좌석 상세 현황 조회
     @GetMapping("/seat-status")
     public List<Seat> getDetailedSeatStatus(@RequestParam Long buildingId, @RequestParam int floor) {
-        List<Seat> seat = seatService.getSeatsByBuildingAndFloor(buildingId, floor);
-        return seat;
+        return seatService.getSeatsByBuildingAndFloor(buildingId, floor);
     }
 } 
